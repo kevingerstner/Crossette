@@ -1,0 +1,23 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:a31113eece73a6d0c41638ebe0b66144:e79c85f172d607104528d43bbe0d22f8:d72c787c7c2d59118272c852d5c7d1a1$
+#
+:format=40300
+:texture=tricorna_run.png
+:size=4096x4096
+:pivotpoints=enabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+tricorna_run_0000s_0000_Tricorna-8;0;3016;800;1080; 0.5;0.5; 0;0;0;0
+tricorna_run_0000s_0001_Tricorna-7;800;3016;800;1080; 0.5;0.5; 0;0;0;0
+tricorna_run_0000s_0002_Tricorna-6;1600;3016;800;1080; 0.5;0.5; 0;0;0;0
+tricorna_run_0000s_0003_Tricorna-5;2400;3016;800;1080; 0.5;0.5; 0;0;0;0
+tricorna_run_0000s_0004_Tricorna-4;3200;3016;800;1080; 0.5;0.5; 0;0;0;0
+tricorna_run_0000s_0005_Tricorna-3;0;1936;800;1080; 0.5;0.5; 0;0;0;0
+tricorna_run_0000s_0006_Tricorna-2;800;1936;800;1080; 0.5;0.5; 0;0;0;0
+tricorna_run_0000s_0007_Tricorna-1;1600;1936;800;1080; 0.5;0.5; 0;0;0;0
