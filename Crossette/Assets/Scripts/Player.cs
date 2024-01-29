@@ -124,6 +124,11 @@ public class Player : MonoBehaviour, IHitboxResponder
         m_groundSensor.Disable(0.2f);
     }
 
+    private void OnStrongAttack()
+    {
+        print("STRONG ATTACK");
+    }
+
     // -- Handle input and movement --
     private void OnMove(InputValue value)
     {
@@ -163,7 +168,7 @@ public class Player : MonoBehaviour, IHitboxResponder
         }
     }
 
-    private void OnAttack()
+    private void OnLightAttack()
     {
         if (m_killed || m_stunned) return;
 
