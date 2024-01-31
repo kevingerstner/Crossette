@@ -5,48 +5,52 @@ using System.Collections;
 public enum PlayerNum {P1, P2};
 public class Player : MonoBehaviour, IHitboxResponder
 {
+    [Header("Basic")]
     [SerializeField] PlayerNum  playerNum;
-    [SerializeField] float      m_speed = 4.0f;
-    [SerializeField] float      m_jumpForce = 7.5f;
-    [SerializeField] float      m_rollForce = 6.0f;
-    [SerializeField] bool       m_noBlood = false;
-    [SerializeField] GameObject m_slideDust;
+
+    [Header("Movement")]
+    [SerializeField] public float      m_speed = 4.0f;
+    [SerializeField] public float      m_jumpForce = 7.5f;
+    [SerializeField] public float      m_rollForce = 6.0f;
+    [SerializeField] public bool       m_noBlood = false;
+    [SerializeField] public GameObject m_slideDust;
     [SerializeField] float attack_dmg = 15f;
     [SerializeField] float attack_dur = 0.2f;
 
     private Hitbox hitbox;
     private Collider2D m_pushbox;
-    private Animator            m_animator;
-    private Rigidbody2D         m_body2d;
+    public Animator            m_animator;
+    public Rigidbody2D         m_body2d;
     private Fortitude           m_fortitude;
     private Sensor_HeroKnight   m_groundSensor;
-    private Sensor_HeroKnight   m_wallSensorR1;
-    private Sensor_HeroKnight   m_wallSensorR2;
-    private Sensor_HeroKnight   m_wallSensorL1;
-    private Sensor_HeroKnight   m_wallSensorL2;
+    public Sensor_HeroKnight   m_wallSensorR1;
+    public Sensor_HeroKnight   m_wallSensorR2;
+    public Sensor_HeroKnight   m_wallSensorL1;
+    public Sensor_HeroKnight   m_wallSensorL2;
     private bool                m_attacking = false;
     private bool                m_stunned = false;
     private bool                m_killed = false;
     private bool                m_moving = false;
     private bool                m_grounded = false;
     private bool                m_rolling = false;
-    private int                 m_facingDirection = 1;
     private int                 m_currentAttack = 0;
     private Vector3             m_movement = Vector3.zero;
     private float               m_timeSinceAttack = 0.0f;
-    private float               m_delayToIdle = 0.0f;
 
     public delegate void OnPlayerDeath(PlayerNum n);
     public event OnPlayerDeath onPlayerDeath;
 
+    private StateMachine movementSM;
+
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         m_animator = GetComponent<Animator>();
         m_pushbox = transform.Find("Pushbox").GetComponent<Collider2D>();
         m_body2d = GetComponent<Rigidbody2D>();
         m_fortitude = GetComponent<Fortitude>();
         hitbox = GetComponentInChildren<Hitbox>();
+        movementSM = GetComponent<StateMachine>();
         m_fortitude.onFortitudeChange += CheckDeath;
         m_fortitude.onLoseFortitude += GetHit;
         m_groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_HeroKnight>();
@@ -82,14 +86,6 @@ public class Player : MonoBehaviour, IHitboxResponder
             m_animator.SetFloat("AirSpeedY", m_body2d.velocity.y);
         }
 
-        if(m_moving)
-        {
-            //transform.position += m_movement * Time.deltaTime * m_speed;
-            // Move
-            if (!m_rolling)
-                m_body2d.velocity = new Vector2(m_movement.x * m_speed, m_body2d.velocity.y);
-        }
-
         // -- Handle Animations --
         //Wall Slide
         m_animator.SetBool("WallSlide", (m_wallSensorR1.State() && m_wallSensorR2.State()) || (m_wallSensorL1.State() && m_wallSensorL2.State()));
@@ -109,7 +105,7 @@ public class Player : MonoBehaviour, IHitboxResponder
         {
             m_rolling = true;
             m_animator.SetTrigger("Roll");
-            m_body2d.velocity = new Vector2(m_facingDirection * m_rollForce, m_body2d.velocity.y);
+            m_body2d.velocity = new Vector2(movementSM.m_facingDirection * m_rollForce, m_body2d.velocity.y);
         }
     }
 
@@ -127,45 +123,6 @@ public class Player : MonoBehaviour, IHitboxResponder
     private void OnStrongAttack()
     {
         print("STRONG ATTACK");
-    }
-
-    // -- Handle input and movement --
-    private void OnMove(InputValue value)
-    {
-        if (m_killed || m_stunned) return;
-
-        float inputX = value.Get<float>();
-
-        // Swap direction of sprite depending on walk direction
-        if (inputX > 0)
-        {
-            //GetComponent<SpriteRenderer>().flipX = false;
-            transform.eulerAngles = new Vector3(0,0,0);
-            m_facingDirection = 1;
-        }
-        else if (inputX < 0)
-        {
-            //GetComponent<SpriteRenderer>().flipX = true;
-            transform.eulerAngles = new Vector3(0, 180, 0);
-            m_facingDirection = -1;
-        }
-
-        //Run
-        if (Mathf.Abs(inputX) > Mathf.Epsilon)
-        {
-            // Reset timer
-            m_delayToIdle = 0.05f;
-
-            m_movement.x = m_facingDirection;
-            m_moving = true;
-            m_animator.SetInteger("AnimState", 1);
-        }
-        else
-        {
-            m_movement.x = 0;
-            m_moving = false;
-            m_animator.SetInteger("AnimState", 0);
-        }
     }
 
     private void OnLightAttack()
@@ -255,25 +212,6 @@ public class Player : MonoBehaviour, IHitboxResponder
     void AE_ResetRoll()
     {
         m_rolling = false;
-    }
-
-    // Called in slide animation.
-    void AE_SlideDust()
-    {
-        Vector3 spawnPosition;
-
-        if (m_facingDirection == 1)
-            spawnPosition = m_wallSensorR2.transform.position;
-        else
-            spawnPosition = m_wallSensorL2.transform.position;
-
-        if (m_slideDust != null)
-        {
-            // Set correct arrow spawn position
-            GameObject dust = Instantiate(m_slideDust, spawnPosition, gameObject.transform.localRotation) as GameObject;
-            // Turn arrow in correct direction
-            dust.transform.localScale = new Vector3(m_facingDirection, 1, 1);
-        }
     }
 
     public string getResponderTag()
