@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RunState : PlayerState
+public class RunState : MovementState
 {
-    public RunState(Player player, StateMachine stateMachine) : base(player, stateMachine)
+    public RunState(Player player, MovementStateMachine stateMachine) : base(player, stateMachine)
     {
-    }
-
-    public override void HandleInput()
-    {
-        base.HandleInput();
     }
 
     public override void OnEnter()
     {
-        base.OnEnter();
     }
 
     public override void OnUpdate()
@@ -42,9 +36,7 @@ public class RunState : PlayerState
     }
     public override void OnExit()
     {
-        base.OnExit();
         player.m_animator.SetInteger("AnimState", 0);
-
     }
 
     public void SwapSprite()

@@ -5087,8 +5087,8 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8820082425455174401, guid: 0a9c8442dd79d4527b54d60cd42c1243,
         type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6323719954332613541}
+      insertIndex: 2
+      addedObject: {fileID: 6323719954332613548}
   m_SourcePrefab: {fileID: 100100000, guid: 0a9c8442dd79d4527b54d60cd42c1243, type: 3}
 --- !u!114 &6323719954332613534 stripped
 MonoBehaviour:
@@ -5102,7 +5102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143610f48a3e04826b178bf2cfeda4bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6323719954332613541
+--- !u!114 &6323719954332613548
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5111,9 +5111,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1550521603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 556b4de3a797b7c468334d57b24b3b34, type: 3}
+  m_Script: {fileID: 11500000, guid: 46ae74796328afd48b782a1401f31e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputX: 0
+  m_facingDirection: 1
+  m_delayToIdle: 0
+  m_movement: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

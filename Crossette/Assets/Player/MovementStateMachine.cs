@@ -1,14 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityEngine.InputSystem;
+public abstract class MovementState : IState
+{
+    protected readonly Player player;
+    protected readonly MovementStateMachine stateMachine;
+    
+    protected MovementState(Player player, MovementStateMachine stateMachine)
+    {
+        this.player = player;
+        this.stateMachine = stateMachine;
+        this.stateMachine = stateMachine;
+    }
 
-public class StateMachine : MonoBehaviour
+    public abstract void OnEnter();
+    public abstract void OnUpdate();
+    public virtual void FixedUpdate() { }
+    public abstract void OnExit();
+}
+
+public class MovementStateMachine : IStateMachine<MovementState>
 {
     Player player;
-    public PlayerState currentState;
-    Dictionary<Type, PlayerState> nodes = new();
 
     public float inputX = 0.0f;
     public int m_facingDirection = 1;
@@ -18,7 +32,8 @@ public class StateMachine : MonoBehaviour
     private IdleState idleState;
     private RunState runState;
 
-    public void Start()
+    // Start is called before the first frame update
+    public override void Start()
     {
         player = GetComponent<Player>();
         idleState = new IdleState(player, this);
@@ -26,36 +41,15 @@ public class StateMachine : MonoBehaviour
         Initialize(runState);
     }
 
-    public void Initialize(PlayerState initialState)
+    public override void Initialize(MovementState initialState)
     {
-        currentState = initialState;
-        initialState.OnEnter();
+        base.Initialize(initialState);
     }
 
-    public void Update()
+    // Update is called once per frame
+    public override void Update()
     {
-        currentState.HandleInput();
-        currentState.OnUpdate();
-    }
-
-    public void FixedUpdate()
-    {
-        currentState.FixedUpdate();
-    }
-
-    public void SetState(PlayerState state)
-    {
-        currentState = nodes[state.GetType()];
-        currentState.OnEnter();
-    }
-
-    public void ChangeState(PlayerState newState)
-    {
-        if (newState == currentState) return;
-
-        currentState.OnExit();
-        currentState = newState;
-        newState.OnEnter();
+        base.Update();
     }
 
     public void OnMove(InputValue value)

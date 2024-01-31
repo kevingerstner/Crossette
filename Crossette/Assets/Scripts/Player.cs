@@ -40,7 +40,7 @@ public class Player : MonoBehaviour, IHitboxResponder
     public delegate void OnPlayerDeath(PlayerNum n);
     public event OnPlayerDeath onPlayerDeath;
 
-    private StateMachine movementSM;
+    private MovementStateMachine movementSM;
 
     // Use this for initialization
     void Start()
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour, IHitboxResponder
         m_body2d = GetComponent<Rigidbody2D>();
         m_fortitude = GetComponent<Fortitude>();
         hitbox = GetComponentInChildren<Hitbox>();
-        movementSM = GetComponent<StateMachine>();
+        movementSM = GetComponent<MovementStateMachine>();
         m_fortitude.onFortitudeChange += CheckDeath;
         m_fortitude.onLoseFortitude += GetHit;
         m_groundSensor = transform.Find("GroundSensor").GetComponent<Sensor_HeroKnight>();
