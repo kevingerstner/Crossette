@@ -62,6 +62,15 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Block"",
+                    ""type"": ""Button"",
+                    ""id"": ""61fcd2dc-6f8c-4cce-a4e5-3066526b34ae"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -183,6 +192,28 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Controller"",
                     ""action"": ""Strong Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aefb495c-66ae-41f2-8006-188af0c55b75"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Block"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""17f3be47-c9c0-4d38-b123-86725215c5b4"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -315,6 +346,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         m_Crossette_Jump = m_Crossette.FindAction("Jump", throwIfNotFound: true);
         m_Crossette_LightAttack = m_Crossette.FindAction("Light Attack", throwIfNotFound: true);
         m_Crossette_StrongAttack = m_Crossette.FindAction("Strong Attack", throwIfNotFound: true);
+        m_Crossette_Block = m_Crossette.FindAction("Block", throwIfNotFound: true);
         // Player 2
         m_Player2 = asset.FindActionMap("Player 2", throwIfNotFound: true);
         m_Player2_Move = m_Player2.FindAction("Move", throwIfNotFound: true);
@@ -385,6 +417,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
     private readonly InputAction m_Crossette_Jump;
     private readonly InputAction m_Crossette_LightAttack;
     private readonly InputAction m_Crossette_StrongAttack;
+    private readonly InputAction m_Crossette_Block;
     public struct CrossetteActions
     {
         private @InputManager m_Wrapper;
@@ -393,6 +426,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Crossette_Jump;
         public InputAction @LightAttack => m_Wrapper.m_Crossette_LightAttack;
         public InputAction @StrongAttack => m_Wrapper.m_Crossette_StrongAttack;
+        public InputAction @Block => m_Wrapper.m_Crossette_Block;
         public InputActionMap Get() { return m_Wrapper.m_Crossette; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -414,6 +448,9 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @StrongAttack.started += instance.OnStrongAttack;
             @StrongAttack.performed += instance.OnStrongAttack;
             @StrongAttack.canceled += instance.OnStrongAttack;
+            @Block.started += instance.OnBlock;
+            @Block.performed += instance.OnBlock;
+            @Block.canceled += instance.OnBlock;
         }
 
         private void UnregisterCallbacks(ICrossetteActions instance)
@@ -430,6 +467,9 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
             @StrongAttack.started -= instance.OnStrongAttack;
             @StrongAttack.performed -= instance.OnStrongAttack;
             @StrongAttack.canceled -= instance.OnStrongAttack;
+            @Block.started -= instance.OnBlock;
+            @Block.performed -= instance.OnBlock;
+            @Block.canceled -= instance.OnBlock;
         }
 
         public void RemoveCallbacks(ICrossetteActions instance)
@@ -533,6 +573,7 @@ public partial class @InputManager: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnLightAttack(InputAction.CallbackContext context);
         void OnStrongAttack(InputAction.CallbackContext context);
+        void OnBlock(InputAction.CallbackContext context);
     }
     public interface IPlayer2Actions
     {

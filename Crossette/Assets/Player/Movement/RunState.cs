@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class RunState : MovementState
 {
-    public RunState(Player player, MovementStateMachine stateMachine) : base(player, stateMachine)
+    public RunState(Player player, MovementStateMachine stateMachine, Animator animator) : base(player, stateMachine, animator)
     {
     }
 
@@ -14,45 +14,45 @@ public class RunState : MovementState
     }
 
     public override void OnUpdate()
-    {
+    {        
         SwapSprite();
 
         //Run
-        if (Mathf.Abs(stateMachine.inputX) > Mathf.Epsilon)
+        if (Mathf.Abs(sm.inputX) > Mathf.Epsilon)
         {
-            stateMachine.m_delayToIdle = 0.05f; // Reset timer
+            sm.delayToIdle = 0.05f; // Reset timer
 
-            stateMachine.m_movement.x = stateMachine.m_facingDirection;
-            player.m_animator.SetInteger("AnimState", 1);
+            sm.movement.x = sm.facingDirection;
+            animator.SetInteger("AnimState", 1);
         }
         else
         {
-            stateMachine.m_movement.x = 0;
-            player.m_animator.SetInteger("AnimState", 0);
+            sm.movement.x = 0;
+            animator.SetInteger("AnimState", 0);
         }
 
         //transform.position += m_movement * Time.deltaTime * m_speed;
-        player.m_body2d.velocity = new Vector2(stateMachine.m_movement.x * player.m_speed, player.m_body2d.velocity.y);
+        player.m_body2d.velocity = new Vector2(sm.movement.x * player.m_speed, player.m_body2d.velocity.y);
     }
     public override void OnExit()
     {
-        player.m_animator.SetInteger("AnimState", 0);
+        animator.SetInteger("AnimState", 0);
     }
 
     public void SwapSprite()
     {
         // Swap direction of sprite depending on walk direction
-        if (stateMachine.inputX > 0)
+        if (sm.inputX > 0)
         {
             //GetComponent<SpriteRenderer>().flipX = false;
             player.transform.eulerAngles = new Vector3(0, 0, 0);
-            stateMachine.m_facingDirection = 1;
+            sm.facingDirection = 1;
         }
-        else if (stateMachine.inputX < 0)
+        else if (sm.inputX < 0)
         {
             //GetComponent<SpriteRenderer>().flipX = true;
             player.transform.eulerAngles = new Vector3(0, 180, 0);
-            stateMachine.m_facingDirection = -1;
+            sm.facingDirection = -1;
         }
     }
 }
