@@ -3602,7 +3602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -17.000061, y: -1.1005859}
+  m_AnchoredPosition: {x: -17, y: -1.1005859}
   m_SizeDelta: {x: 34.001343, y: 38.08661}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1539733411
@@ -4986,6 +4986,11 @@ PrefabInstance:
       propertyPath: m_jumpForce
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 5775605004829290647, guid: 0a9c8442dd79d4527b54d60cd42c1243,
+        type: 3}
+      propertyPath: block_downtime
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 5815153918129792134, guid: 0a9c8442dd79d4527b54d60cd42c1243,
         type: 3}
       propertyPath: m_TagString
@@ -5126,6 +5131,7 @@ MonoBehaviour:
   hitbox: {fileID: 0}
   isAttacking: 0
   timeSinceAttack: 0
+  blockTimer: 0
   currentAttack: 0
 --- !u!114 &6323719954332613562
 MonoBehaviour:
@@ -5144,6 +5150,7 @@ MonoBehaviour:
   delayToIdle: 0
   movement: {x: 0, y: 0, z: 0}
   grounded: 0
+  canMove: 1
   m_groundSensor: {fileID: 0}
   m_wallSensorR1: {fileID: 0}
   m_wallSensorR2: {fileID: 0}

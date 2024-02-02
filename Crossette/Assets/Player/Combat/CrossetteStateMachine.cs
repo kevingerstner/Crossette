@@ -30,6 +30,7 @@ public class CrossetteStateMachine : IStateMachine<CrossetteState>
 
         InputAction blockAction = playerInput.actions["Crossette/Block"];
         blockAction.started += OnBlockStart;
+        blockAction.performed += OnBlockPerformed;
         blockAction.canceled += OnBlockCancel;
 
         idle = new IdleAttackState(this, player, animator);
@@ -70,6 +71,11 @@ public class CrossetteStateMachine : IStateMachine<CrossetteState>
         if (blockTimer < player.block_downtime) return;
         Debug.Log("STARTED");
         ChangeState(blockState);
+    }
+
+    private void OnBlockPerformed(InputAction.CallbackContext context)
+    {
+
     }
 
 
